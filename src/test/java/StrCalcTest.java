@@ -17,5 +17,12 @@ public class StrCalcTest {
         int result = calculator.add("3,5");
         assertEquals(8, result);
     }
+    @Test
+    public void testNewLineDelimiter() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("1\n2,3");
+        assertEquals(6, result);
+    }
+
 
 }
