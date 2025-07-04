@@ -1,6 +1,8 @@
 import com.stringcalctdd.StrCalc;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StrCalcTest {
 
@@ -48,6 +50,16 @@ public class StrCalcTest {
         StrCalc calculator = new StrCalc();
         int result = calculator.add("//:\n1:2:3");
         assertEquals(6, result);
+    }
+    @Test
+    public void testNegativeNumbers() {
+        StrCalc calculator = new StrCalc();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            calculator.add("1,-2,3,-4");
+        });
+
+        assertTrue(exception.getMessage().contains("Negatives not allowed: [-2, -4]"));
     }
 
 
