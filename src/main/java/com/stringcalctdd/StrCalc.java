@@ -3,7 +3,7 @@ package com.stringcalctdd;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.regex.Matcher;
 public class StrCalc {
 
     public int add(String numbers) {
@@ -11,35 +11,40 @@ public class StrCalc {
             return 0;
         }
 
-        String delimiter = ",|\n";  // default delimiters
+        String delimiter = ",|\n";
+        String numPart = numbers;
 
         if (numbers.startsWith("//")) {
-            int delimiterEnd = numbers.indexOf("\n");
-            String delimiterPart = numbers.substring(2, delimiterEnd);
+            int newlineIndex = numbers.indexOf("\n");
+            String delimiterPart = numbers.substring(2, newlineIndex);
 
             if (delimiterPart.startsWith("[") && delimiterPart.endsWith("]")) {
-                // e.g. //[***]
-                delimiter = Pattern.quote(delimiterPart.substring(1, delimiterPart.length() - 1));
+                // Support multiple custom delimiters like //[***][%]
+                List<String> delimiters = new ArrayList<>();
+                Matcher m = Pattern.compile("\\[(.*?)\\]").matcher(delimiterPart);
+                while (m.find()) {
+                    delimiters.add(Pattern.quote(m.group(1)));
+                }
+                delimiter = String.join("|", delimiters);
             } else {
-                // e.g. //;
+                // Single-char delimiter
                 delimiter = Pattern.quote(delimiterPart);
             }
-
-            numbers = numbers.substring(delimiterEnd + 1);
+            numPart = numbers.substring(newlineIndex + 1);
         }
 
-
-        String[] parts = numbers.split(delimiter);
+        String[] parts = numPart.split(delimiter);
         int sum = 0;
         List<Integer> negatives = new ArrayList<>();
 
         for (String part : parts) {
-            int num = Integer.parseInt(part.trim());
-
-            if (num < 0) {
-                negatives.add(num);
-            } else if (num <= 1000) {
-                sum += num;
+            if (!part.trim().isEmpty()) {
+                int num = Integer.parseInt(part.trim());
+                if (num < 0) {
+                    negatives.add(num);
+                } else if (num <= 1000) {
+                    sum += num;
+                }
             }
         }
 
@@ -49,7 +54,5 @@ public class StrCalc {
 
         return sum;
     }
-
-
 
 }
