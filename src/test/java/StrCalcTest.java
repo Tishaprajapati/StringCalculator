@@ -23,6 +23,32 @@ public class StrCalcTest {
         int result = calculator.add("1\n2,3");
         assertEquals(6, result);
     }
+    @Test
+    public void testCustomDelimiter() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("//;\n1;2");
+        assertEquals(3, result);
+    }
+    @Test
+    public void testCustomDelimiterWithSpaces() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("//;\n10;20");
+        assertEquals(30, result);
+    }
+
+    @Test
+    public void testCustomDelimiterWithSingleNumber() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("//#\n5");
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void testCustomDelimiterMixedWithInvalid() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("//:\n1:2:3");
+        assertEquals(6, result);
+    }
 
 
 }
