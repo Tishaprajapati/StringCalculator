@@ -67,6 +67,12 @@ public class StrCalcTest {
         int result = calculator.add("2,1001");
         assertEquals(2, result);
     }
+    @Test
+    public void testLongCustomDelimiter() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("//[***]\n1***2***3");
+        assertEquals(6, result);
+    }
 
 
 }
