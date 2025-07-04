@@ -61,6 +61,12 @@ public class StrCalcTest {
 
         assertTrue(exception.getMessage().contains("Negatives not allowed: [-2, -4]"));
     }
+    @Test
+    public void testNumbersGreaterThan1000AreIgnored() {
+        StrCalc calculator = new StrCalc();
+        int result = calculator.add("2,1001");
+        assertEquals(2, result);
+    }
 
 
 }
